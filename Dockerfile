@@ -1,0 +1,20 @@
+# Dockerfile pour Django + Tailwind
+FROM python:3.11-slim
+
+ENV PYTHONDONTWRITEBYTECODE 1
+ENV PYTHONUNBUFFERED 1
+
+WORKDIR /app
+
+COPY requirements.txt /app/
+RUN pip install --upgrade pip && pip install -r requirements.txt
+
+COPY . /app/
+
+# Installation de Node.js et Tailwind CSS
+RUN apt-get update && \
+    apt-get install -y nodejs npm && \
+    npm install -g tailwindcss@latest postcss@latest autoprefixer@latest && \
+    apt-get clean && rm -rf /var/lib/apt/lists/*
+
+CMD ["gunicorn", "erp_universel.wsgi:application", "--bind", "0.0.0.0:8000"]

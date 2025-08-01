@@ -1,0 +1,49 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="max-w-4xl mx-auto bg-white rounded shadow p-6">
+    <div class="flex items-center justify-between mb-4">
+        <h1 class="text-2xl font-bold">Ventes</h1>
+        <a href="{% url 'vente_create' %}" class="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700">Ajouter une vente</a>
+    </div>
+    <table class="min-w-full divide-y divide-gray-200">
+        <thead class="bg-gray-50">
+            <tr>
+                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">ID</th>
+                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Client</th>
+                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Date</th>
+                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Montant (€)</th>
+                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Description</th>
+            </tr>
+        </thead>
+        <tbody class="bg-white divide-y divide-gray-200">
+            {% for vente in ventes %}
+            <tr>
+                <td class="px-6 py-4 whitespace-nowrap">{{ vente.id }}</td>
+                <td class="px-6 py-4 whitespace-nowrap">{{ vente.client }}</td>
+                <td class="px-6 py-4 whitespace-nowrap">{{ vente.date_vente|date:'d/m/Y H:i' }}</td>
+                <td class="px-6 py-4 whitespace-nowrap">{{ vente.montant }}</td>
+                <td class="px-6 py-4 whitespace-nowrap">{{ vente.description }}</td>
+            </tr>
+            <tr>
+                <td class="px-6 py-4 whitespace-nowrap">{{ vente.id }}</td>
+                <td class="px-6 py-4 whitespace-nowrap">{{ vente.client }}</td>
+                <td class="px-6 py-4 whitespace-nowrap">{{ vente.date_vente|date:'d/m/Y H:i' }}</td>
+                <td class="px-6 py-4 whitespace-nowrap">{{ vente.montant }}</td>
+                <td class="px-6 py-4 whitespace-nowrap">{{ vente.description }}</td>
+                <td class="px-6 py-4 whitespace-nowrap flex gap-2">
+                    <a href="{% url 'vente_edit' vente.pk %}" class="text-blue-600 hover:underline">Modifier</a>
+                    <form action="{% url 'vente_delete' vente.pk %}" method="post" style="display:inline;">
+                        {% csrf_token %}
+                        <button type="submit" class="text-red-600 hover:underline" onclick="return confirm('Supprimer cette vente ?');">Supprimer</button>
+                    </form>
+                </td>
+            </tr>
+            {% empty %}
+            <tr>
+                <td colspan="5" class="px-6 py-4 text-center text-gray-400">Aucune vente</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock %}

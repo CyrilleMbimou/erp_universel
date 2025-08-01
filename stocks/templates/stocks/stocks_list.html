@@ -1,0 +1,38 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="max-w-4xl mx-auto bg-white rounded shadow p-6">
+    <div class="flex items-center justify-between mb-4">
+        <h1 class="text-2xl font-bold">Stocks</h1>
+        <a href="{% url 'stock_create' %}" class="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700">Ajouter un stock</a>
+    </div>
+    <table class="min-w-full divide-y divide-gray-200">
+        <thead class="bg-gray-50">
+            <tr>
+                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Produit</th>
+                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Quantité</th>
+                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Seuil d'alerte</th>
+            <tr>
+                <td class="border px-4 py-2">{{ stock.produit }}</td>
+                <td class="border px-4 py-2">{{ stock.quantite }}</td>
+                <td class="border px-4 py-2">{{ stock.emplacement }}</td>
+                <td class="border px-4 py-2 flex gap-2">
+                    <a href="{% url 'stock_edit' stock.pk %}" class="text-blue-600 hover:underline">Modifier</a>
+                    <form action="{% url 'stock_delete' stock.pk %}" method="post" style="display:inline;">
+                        {% csrf_token %}
+                        <button type="submit" class="text-red-600 hover:underline" onclick="return confirm('Supprimer ce stock ?');">Supprimer</button>
+                    </form>
+                </td>
+            </tr>
+                <td class="px-6 py-4 whitespace-nowrap">{{ stock.produit }}</td>
+                <td class="px-6 py-4 whitespace-nowrap">{{ stock.quantite }}</td>
+                <td class="px-6 py-4 whitespace-nowrap">{{ stock.seuil_alerte }}</td>
+            </tr>
+            {% empty %}
+            <tr>
+                <td colspan="3" class="px-6 py-4 text-center text-gray-400">Aucun stock</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock %}

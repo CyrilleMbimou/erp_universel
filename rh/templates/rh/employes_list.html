@@ -1,0 +1,40 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="max-w-4xl mx-auto bg-white rounded shadow p-6">
+    <div class="flex items-center justify-between mb-4">
+        <h1 class="text-2xl font-bold">Employés</h1>
+        <a href="{% url 'employe_create' %}" class="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700">Ajouter un employé</a>
+    </div>
+    <table class="min-w-full divide-y divide-gray-200">
+        <thead class="bg-gray-50">
+            <tr>
+                <th class="px-6 py-3">Nom</th>
+                <th class="px-6 py-3">Prénom</th>
+                <th class="px-6 py-3">Poste</th>
+                <th class="px-6 py-3">Date d'embauche</th>
+            </tr>
+        </thead>
+        <tbody class="bg-white divide-y divide-gray-200">
+            {% for employe in employes %}
+            <tr>
+                <td class="px-6 py-4">{{ employe.nom }}</td>
+                <td class="px-6 py-4">{{ employe.prenom }}</td>
+                <td class="px-6 py-4">{{ employe.poste }}</td>
+                <td class="px-6 py-4">{{ employe.date_embauche }}</td>
+            </tr>
+                <td class="px-6 py-4 flex gap-2">
+                    <a href="{% url 'employe_edit' employe.pk %}" class="text-blue-600 hover:underline">Modifier</a>
+                    <form action="{% url 'employe_delete' employe.pk %}" method="post" style="display:inline;">
+                        {% csrf_token %}
+                        <button type="submit" class="text-red-600 hover:underline" onclick="return confirm('Supprimer cet employé ?');">Supprimer</button>
+                    </form>
+                </td>
+            {% empty %}
+            <tr>
+                <td colspan="4" class="px-6 py-4 text-center text-gray-400">Aucun employé</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock %}

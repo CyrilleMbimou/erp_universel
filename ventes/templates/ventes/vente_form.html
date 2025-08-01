@@ -1,0 +1,16 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="max-w-xl mx-auto bg-white rounded shadow p-6">
+    <h1 class="text-2xl font-bold mb-4">
+        {% if edit %}Modifier la vente{% else %}Ajouter une vente{% endif %}
+    </h1>
+    <form method="post" class="space-y-4">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit" class="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700">
+            {% if edit %}Enregistrer les modifications{% else %}Enregistrer{% endif %}
+        </button>
+        <a href="{% url 'ventes_list' %}" class="ml-4 text-blue-600 hover:underline">Retour à la liste</a>
+    </form>
+</div>
+{% endblock %}

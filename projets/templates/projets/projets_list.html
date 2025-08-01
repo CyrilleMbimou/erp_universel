@@ -1,0 +1,40 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="max-w-4xl mx-auto bg-white rounded shadow p-6">
+    <div class="flex items-center justify-between mb-4">
+        <h1 class="text-2xl font-bold">Projets</h1>
+        <a href="{% url 'projet_create' %}" class="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700">Ajouter un projet</a>
+    </div>
+    <table class="min-w-full divide-y divide-gray-200">
+        <thead class="bg-gray-50">
+            <tr>
+                <th class="px-6 py-3">Nom</th>
+                <th class="px-6 py-3">Statut</th>
+                <th class="px-6 py-3">Début</th>
+                <th class="px-6 py-3">Fin</th>
+            </tr>
+        </thead>
+        <tbody class="bg-white divide-y divide-gray-200">
+            {% for projet in projets %}
+            <tr>
+                <td class="px-6 py-4">{{ projet.nom }}</td>
+                <td class="px-6 py-4">{{ projet.statut }}</td>
+                <td class="px-6 py-4">{{ projet.date_debut }}</td>
+                <td class="px-6 py-4">{{ projet.date_fin }}</td>
+               <td class="px-6 py-4">
+                   <a href="{% url 'projet_edit' projet.pk %}" class="text-blue-600 hover:underline">Modifier</a>
+                    <form action="{% url 'projet_delete' projet.pk %}" method="post" style="display:inline;">
+                        {% csrf_token %}
+                        <button type="submit" class="text-red-600 hover:underline" onclick="return confirm('Supprimer ce projet ?');">Supprimer</button>
+                    </form>
+               </td>
+            </tr>
+            {% empty %}
+            <tr>
+                <td colspan="4" class="px-6 py-4 text-center text-gray-400">Aucun projet</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock %}
